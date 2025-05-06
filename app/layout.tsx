@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "verification_code", // Ganti dengan kode verifikasi Google Search Console Anda
+    google: "google-site-verification=oHW5pHiWCFk56k_5mpIeUubYAo8TDhgo8-yHUz8hU8w", // Ganti dengan kode verifikasi Google Search Console Anda
   }
 }
 
