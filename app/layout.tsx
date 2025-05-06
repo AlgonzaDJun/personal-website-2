@@ -46,8 +46,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "google-site-verification=oHW5pHiWCFk56k_5mpIeUubYAo8TDhgo8-yHUz8hU8w", // Ganti dengan kode verifikasi Google Search Console Anda
-  }
+    google: "oHW5pHiWCFk56k_5mpIeUubYAo8TDhgo8-yHUz8hU8w", // Ganti dengan kode verifikasi Google Search Console Anda
+  },
 }
 
 export default function RootLayout({
