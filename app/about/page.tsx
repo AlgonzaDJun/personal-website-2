@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, type Variants } from "framer-motion";
@@ -18,99 +18,107 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from 'next/navigation';
 
 // Sample data for education and experience
 const education = [
   {
     id: 1,
-    degree: "Master of Computer Science",
-    institution: "Stanford University",
-    location: "California, USA",
-    period: "2018 - 2020",
-    description:
-      "Specialized in Artificial Intelligence and Machine Learning. Thesis on 'Deep Learning Applications in Natural Language Processing'.",
-    skills: [
-      "Machine Learning",
-      "Deep Learning",
-      "NLP",
-      "Python",
-      "TensorFlow",
-    ],
+    degree: "Teknik Informatika",
+    institution: "Universitas Negeri Surabaya",
+    location: "Surabaya, Indonesia",
+    period: "08/2020 - 07/2024",
+    description: "Menempuh pendidikan sarjana Teknik Informatika dengan GPA 3.8",
+    skills: ["Software Engineering", "Web Development", "Database Management"],
   },
   {
     id: 2,
-    degree: "Bachelor of Science in Computer Science",
-    institution: "Massachusetts Institute of Technology",
-    location: "Massachusetts, USA",
-    period: "2014 - 2018",
-    description:
-      "Graduated with honors. Focus on software engineering and data structures. Participated in multiple hackathons and coding competitions.",
-    skills: ["Algorithms", "Data Structures", "Java", "C++", "Web Development"],
-  },
-  {
-    id: 3,
-    degree: "High School Diploma",
-    institution: "International School of Technology",
-    location: "New York, USA",
-    period: "2010 - 2014",
-    description:
-      "Advanced placement in Mathematics and Computer Science. Led the school's robotics team to national championship.",
-    skills: ["Mathematics", "Basic Programming", "Robotics", "Leadership"],
+    degree: "Science",
+    institution: "SMA Negeri 1 Nabire",
+    location: "Papua, Indonesia",
+    period: "07/2017 - 06/2020",
+    description: "Menyelesaikan pendidikan menengah atas dengan fokus pada bidang Sains",
+    skills: ["Mathematics", "Physics", "Chemistry"],
   },
 ];
 
 const experience = [
   {
     id: 1,
-    position: "Senior Software Engineer",
-    company: "Google",
-    location: "Mountain View, CA",
-    period: "2020 - Present",
-    description:
-      "Leading a team of 5 engineers working on Google Cloud Platform. Implemented key features that improved system performance by 40%. Mentoring junior developers and contributing to open-source projects.",
+    position: "Freelance Fullstack Web Developer",
+    company: "Freelance",
+    location: "Remote",
+    period: "12/2023 - Saat ini",
+    description: `Mengerjakan berbagai proyek website termasuk Sistem Perizinan, Website E-Study, Website Tutoring, dan Website Jauhi Narkoba. Bertanggung jawab dalam pengembangan frontend dan backend, integrasi API, dan manajemen database.`,
     skills: [
-      "React",
-      "Node.js",
-      "Cloud Architecture",
-      "Team Leadership",
-      "TypeScript",
+      "React.js",
+      "Next.js",
+      "Laravel",
+      "MySQL",
+      "TailwindCSS",
+      "API Integration"
     ],
   },
   {
     id: 2,
-    position: "Full Stack Developer",
-    company: "Amazon",
-    location: "Seattle, WA",
-    period: "2018 - 2020",
-    description:
-      "Developed and maintained e-commerce applications serving millions of users. Optimized database queries resulting in 30% faster page loads. Collaborated with UX designers to implement responsive interfaces.",
-    skills: ["JavaScript", "AWS", "MongoDB", "Express", "React", "Node.js"],
+    position: "Skripsi - Website Pelaporan Fasilitas Kampus",
+    company: "Personal",
+    location: "Indonesia",
+    period: "01/2024 - 06/2024",
+    description: "Mengembangkan website pelaporan fasilitas kampus dengan fitur perankingan penanganan menggunakan clustering dan NER. Implementasi UI/UX, database design, dan integrasi dengan Hugging Face API.",
+    skills: ["FastAPI", "Python", "React", "Clustering", "NER", "Database Design"],
   },
   {
     id: 3,
-    position: "Software Engineering Intern",
-    company: "Microsoft",
-    location: "Redmond, WA",
-    period: "Summer 2017",
-    description:
-      "Worked on the Azure team to develop cloud-based solutions. Created internal tools that streamlined the development workflow. Participated in code reviews and agile development processes.",
-    skills: ["C#", ".NET", "Azure", "SQL", "Git"],
+    position: "Internship Fullstack Web Developer",
+    company: "PT Media Nusa Mandiri",
+    location: "Indonesia",
+    period: "02/2023 - 06/2023",
+    description: "Berkontribusi dalam pengembangan Sistem Informasi Akuntansi dan website Green Journal Accounting. Bertanggung jawab dalam implementasi fitur akuntansi dan pembuatan laporan.",
+    skills: ["PHP Native", "MySQL", "SQL", "Web Development"],
   },
 ];
 
-// Skills data
 const skills = [
-  { name: "JavaScript", level: 95 },
-  { name: "TypeScript", level: 90 },
-  { name: "React", level: 92 },
-  { name: "Next.js", level: 88 },
-  { name: "Node.js", level: 85 },
+  { name: "ReactJS", level: 90 },
+  { name: "NextJS", level: 80 },
+  { name: "Laravel", level: 80 },
+  { name: "FastAPI", level: 80 },
+  { name: "CSS (TailwindCSS, Bootstrap)", level: 90 },
+  { name: "GIT Version Control System", level: 90 },
+  { name: "NodeJS, ExpressJS", level: 80 },
+  { name: "PHP", level: 80 },
+  { name: "MySQL", level: 80 },
   { name: "Python", level: 80 },
-  { name: "GraphQL", level: 75 },
-  { name: "AWS", level: 78 },
-  { name: "Docker", level: 70 },
-  { name: "UI/UX Design", level: 65 },
+  { name: "UI/UX Design", level: 80 },
+  { name: "Team Work", level: 80 },
 ];
+
+// Konten dalam bahasa Inggris dan Indonesia
+const content = {
+  en: {
+    hello: "Hello, I'm Algonza Arjunantyo",
+    title: "A passionate Full-Stack Developer based in Yogyakarta, ID",
+    bio1: "I am a Software Engineer with expertise in Frontend and Backend Development. I have a strong understanding and experience in React.js, Next.js, PHP, MySQL, CSS, and JavaScript. On the backend side, I master Laravel, Node.js, Express.js, FastAPI.",
+    bio2: "I can work collaboratively in a team, have good communication skills, and am enthusiastic about learning new technologies. Currently, I am looking for opportunities to develop skills and expand experience in Software Engineering.",
+    downloadResume: "Download Resume",
+    contactMe: "Contact Me",
+    workExperience: "Work Experience",
+    education: "Education",
+    skillsExpertise: "Skills & Expertise",
+  },
+  id: {
+    hello: "Halo, Saya Algonza Arjunantyo",
+    title: "Seorang Full-Stack Developer yang Antusias di Yogyakarta, ID",
+    bio1: "Saya adalah seorang Software Engineer dengan keahlian di Frontend dan Backend Development. Saya memiliki pemahaman yang kuat dan pengalaman dalam React.js, Next.js, PHP, MySQL, CSS, dan JavaScript. Di sisi backend, saya menguasai Laravel, Node.js, Express.js, FastAPI.",
+    bio2: "Saya mampu bekerja secara kolaboratif dalam tim, memiliki keterampilan komunikasi yang baik, dan antusias dalam mempelajari teknologi baru. Saat ini, saya sedang mencari peluang untuk mengembangkan keterampilan serta memperluas pengalaman di bidang Software Engineering.",
+    downloadResume: "Unduh Resume",
+    contactMe: "Hubungi Saya",
+    workExperience: "Pengalaman Kerja",
+    education: "Pendidikan",
+    skillsExpertise: "Keahlian & Kemampuan",
+  }
+};
 
 // Animation variants
 const fadeIn: Variants = {
@@ -160,6 +168,19 @@ const skillBarVariants: Variants = {
 };
 
 export default function AboutPage() {
+  const router = useRouter();
+  // State untuk bahasa
+  const [language, setLanguage] = useState<'en' | 'id'>('en');
+  
+  // Fungsi untuk mengganti bahasa
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'id' : 'en');
+  };
+  
+  // Menggunakan data sesuai bahasa yang dipilih
+  const education = educationData[language];
+  const experience = experienceData[language];
+  
   // Refs for scroll animations
   const bioRef = useRef(null);
   const educationRef = useRef(null);
@@ -187,6 +208,16 @@ export default function AboutPage() {
         <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-gradient-to-bl from-blue-500/10 to-emerald-500/10 blur-[100px]" />
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-emerald-500/10 to-blue-500/10 blur-[100px]" />
 
+        {/* Language Toggle Button */}
+        <div className="fixed top-4 right-4 z-50 md:right-8 lg:right-12 animate-float">
+          <Button 
+            onClick={toggleLanguage}
+            className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white border-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl"
+          >
+            {language === 'en' ? 'ID 🇮🇩' : 'EN 🇬🇧'}
+          </Button>
+        </div>
+
         {/* Header section */}
         <div className="relative z-10">
           <div className="h-[40vh] min-h-[300px] flex items-center justify-center relative overflow-hidden">
@@ -208,7 +239,6 @@ export default function AboutPage() {
                 zIndex: 10,
                 paddingInline: "1rem",
               }}
-              //   className="text-center z-10 px-4"
             >
               <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-emerald-100">
                 About Me
@@ -266,35 +296,27 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div>
-                  <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-blue-900/50 to-emerald-900/50 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-sm font-medium border border-blue-800/30 mb-4">
-                    Hello, I'm John Doe
+                  <div className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-blue-900/50 to-emerald-900/50 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 text-sm font-medium border border-blue-800/30 mb-4 text-white">
+                    {content[language].hello}
                   </div>
                   <h2 className="text-3xl font-bold mb-6">
-                    A passionate Full-Stack Developer based in San Francisco, CA
+                    {content[language].title}
                   </h2>
                   <p className="text-slate-300 mb-6">
-                    I'm a software engineer with over 5 years of experience in
-                    building web applications. My expertise spans across
-                    front-end and back-end development, with a focus on creating
-                    scalable, efficient, and user-friendly solutions. I'm
-                    passionate about clean code, performance optimization, and
-                    staying up-to-date with the latest technologies.
+                    {content[language].bio1}
                   </p>
                   <p className="text-slate-300 mb-8">
-                    When I'm not coding, you can find me hiking in the
-                    mountains, reading tech blogs, or contributing to
-                    open-source projects. I believe in continuous learning and
-                    sharing knowledge with the developer community.
+                    {content[language].bio2}
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Button className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white border-0">
-                      Download Resume
+                      {content[language].downloadResume}
                     </Button>
                     <Button
                       variant="outline"
                       className="border-slate-700 text-white hover:bg-slate-800"
                     >
-                      Contact Me
+                      {content[language].contactMe}
                     </Button>
                   </div>
                 </div>
@@ -313,7 +335,7 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600/20 to-emerald-600/20 flex items-center justify-center">
                   <Briefcase className="text-emerald-400" size={24} />
                 </div>
-                <h2 className="text-3xl font-bold">Work Experience</h2>
+                <h2 className="text-3xl font-bold">{content[language].workExperience}</h2>
               </div>
 
               <motion.div
@@ -384,7 +406,7 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600/20 to-emerald-600/20 flex items-center justify-center">
                   <GraduationCap className="text-blue-400" size={24} />
                 </div>
-                <h2 className="text-3xl font-bold">Education</h2>
+                <h2 className="text-3xl font-bold">{content[language].education}</h2>
               </div>
 
               <motion.div
@@ -455,7 +477,7 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600/20 to-emerald-600/20 flex items-center justify-center">
                   <Code className="text-blue-400" size={24} />
                 </div>
-                <h2 className="text-3xl font-bold">Skills & Expertise</h2>
+                <h2 className="text-3xl font-bold">{content[language].skillsExpertise}</h2>
               </div>
 
               <motion.div
@@ -503,7 +525,9 @@ export default function AboutPage() {
                           I'm always open to discussing new projects, creative
                           ideas or opportunities to be part of your vision.
                         </p>
-                        <Button className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white border-0">
+                        <Button 
+                        onClick={() => router.push('/contact')}
+                        className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white border-0">
                           Get In Touch <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </div>
@@ -524,3 +548,122 @@ export default function AboutPage() {
     </div>
   );
 }
+
+// Data pendidikan dan pengalaman dalam dua bahasa
+const educationData = {
+  en: [
+    {
+      id: 1,
+      degree: "Informatics Engineering",
+      institution: "State University of Surabaya",
+      location: "Surabaya, Indonesia",
+      period: "08/2020 - 07/2024",
+      description: "Pursuing a bachelor's degree in Informatics Engineering with a GPA of 3.8",
+      skills: ["Software Engineering", "Web Development", "Database Management"],
+    },
+    {
+      id: 2,
+      degree: "Science",
+      institution: "SMA Negeri 1 Nabire",
+      location: "Papua, Indonesia",
+      period: "07/2017 - 06/2020",
+      description: "Completed high school education with a focus on Science",
+      skills: ["Mathematics", "Physics", "Chemistry"],
+    },
+  ],
+  id: [
+    {
+      id: 1,
+      degree: "Teknik Informatika",
+      institution: "Universitas Negeri Surabaya",
+      location: "Surabaya, Indonesia",
+      period: "08/2020 - 07/2024",
+      description: "Menempuh pendidikan sarjana Teknik Informatika dengan GPA 3.8",
+      skills: ["Software Engineering", "Web Development", "Database Management"],
+    },
+    {
+      id: 2,
+      degree: "Science",
+      institution: "SMA Negeri 1 Nabire",
+      location: "Papua, Indonesia",
+      period: "07/2017 - 06/2020",
+      description: "Menyelesaikan pendidikan menengah atas dengan fokus pada bidang Sains",
+      skills: ["Mathematics", "Physics", "Chemistry"],
+    },
+  ]
+};
+
+const experienceData = {
+  en: [
+    {
+      id: 1,
+      position: "Freelance Fullstack Web Developer",
+      company: "Freelance",
+      location: "Remote",
+      period: "12/2023 - Present",
+      description: `Working on various website projects including Licensing System, E-Study Website, Tutoring Website, and Anti-Drug Website. Responsible for frontend and backend development, API integration, and database management.`,
+      skills: [
+        "React.js",
+        "Next.js",
+        "Laravel",
+        "MySQL",
+        "TailwindCSS",
+        "API Integration"
+      ],
+    },
+    {
+      id: 2,
+      position: "Thesis - Campus Facility Reporting Website",
+      company: "Personal",
+      location: "Indonesia",
+      period: "01/2024 - 06/2024",
+      description: "Developing a campus facility reporting website with handling ranking features using clustering and NER. Implementation of UI/UX, database design, and integration with Hugging Face API.",
+      skills: ["FastAPI", "Python", "React", "Clustering", "NER", "Database Design"],
+    },
+    {
+      id: 3,
+      position: "Internship Fullstack Web Developer",
+      company: "PT Media Nusa Mandiri",
+      location: "Indonesia",
+      period: "02/2023 - 06/2023",
+      description: "Contributing to the development of Accounting Information System and Green Journal Accounting website. Responsible for implementing accounting features and report generation.",
+      skills: ["PHP Native", "MySQL", "SQL", "Web Development"],
+    },
+  ],
+  id: [
+    {
+      id: 1,
+      position: "Freelance Fullstack Web Developer",
+      company: "Freelance",
+      location: "Remote",
+      period: "12/2023 - Saat ini",
+      description: `Mengerjakan berbagai proyek website termasuk Sistem Perizinan, Website E-Study, Website Tutoring, dan Website Jauhi Narkoba. Bertanggung jawab dalam pengembangan frontend dan backend, integrasi API, dan manajemen database.`,
+      skills: [
+        "React.js",
+        "Next.js",
+        "Laravel",
+        "MySQL",
+        "TailwindCSS",
+        "API Integration"
+      ],
+    },
+    {
+      id: 2,
+      position: "Skripsi - Website Pelaporan Fasilitas Kampus",
+      company: "Personal",
+      location: "Indonesia",
+      period: "01/2024 - 06/2024",
+      description: "Mengembangkan website pelaporan fasilitas kampus dengan fitur perankingan penanganan menggunakan clustering dan NER. Implementasi UI/UX, database design, dan integrasi dengan Hugging Face API.",
+      skills: ["FastAPI", "Python", "React", "Clustering", "NER", "Database Design"],
+    },
+    {
+      id: 3,
+      position: "Internship Fullstack Web Developer",
+      company: "PT Media Nusa Mandiri",
+      location: "Indonesia",
+      period: "02/2023 - 06/2023",
+      description: "Berkontribusi dalam pengembangan Sistem Informasi Akuntansi dan website Green Journal Accounting. Bertanggung jawab dalam implementasi fitur akuntansi dan pembuatan laporan.",
+      skills: ["PHP Native", "MySQL", "SQL", "Web Development"],
+    },
+  ]
+};

@@ -12,7 +12,7 @@ export interface PortoInterface {
   webLink: string;
   tags: string[];
   // icon?: IIcon;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   featured: boolean;
 }

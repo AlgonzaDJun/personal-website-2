@@ -10,6 +10,7 @@ interface CreatePortoBody {
   images: string[]; // base64 URLs
   gitLink: string;
   webLink: string;
+  tags: string[];
 }
 
 // POST /api/porto
@@ -18,6 +19,11 @@ export const POST = async (request: NextRequest) => {
 
   try {
     const data: CreatePortoBody = await request.json();
+
+    if (!Array.isArray(data.tags)) {
+      data.tags = data.tags ? String(data.tags).split(',').map(tag => tag.trim()) : [];
+    }
+    // console.log(data);
 
     const uploadPromises = data.images.map(async (image: string) => {
       const uploadedImage = await cloudinary.uploader.upload(image, {
@@ -31,6 +37,7 @@ export const POST = async (request: NextRequest) => {
     const newData = {
       ...data,
       images: uploadedImages,
+      tags: data.tags
     };
 
     const porto: IPorto = await Porto.create(newData);

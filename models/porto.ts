@@ -16,6 +16,7 @@ export interface IPorto extends Document {
   gitLink: string;
   webLink: string;
   tags: string[];
+  featured: boolean;
   // icon?: IIcon;
   createdAt: Date;
   updatedAt: Date;
@@ -39,6 +40,8 @@ const portoSchema = new Schema<IPorto>(
     images: [imageSchema],
     gitLink: { type: String, required: true },
     webLink: { type: String, required: true },
+    tags: [String],
+    featured: { type: Boolean, default: false },
     // icon: iconSchema,
   },
   {

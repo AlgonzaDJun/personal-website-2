@@ -71,6 +71,9 @@ export default function Home() {
     "/api/portos",
     fetcher
   );
+  
+  console.log(data)
+
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const featuredProject = data && data.portos.find((p) => p.featured);
   const otherProjects = data && data.portos.filter((p) => !p.featured) || []
@@ -85,8 +88,23 @@ export default function Home() {
     new Set(data && data.portos.flatMap((p) => p.tags))
   );
 
-  if (isLoading) return <div>loading...</div>;
-
+  if (isLoading) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 flex items-center justify-center">
+      <div className="relative">
+        {/* Gradient background effects */}
+        <div className="absolute -inset-20 rounded-full bg-gradient-to-r from-blue-600/20 to-emerald-600/20 blur-[100px]" />
+        <div className="absolute -inset-20 rounded-full bg-gradient-to-l from-emerald-600/20 to-blue-600/20 blur-[100px]" />
+        
+        {/* Loading spinner */}
+        <div className="relative flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin" />
+          <div className="text-lg font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+            Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white">
       <div className="relative mx-auto max-w-7xl rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950/80 via-slate-900/80 to-emerald-950/80 border border-emerald-900/30 backdrop-blur-sm">
@@ -119,7 +137,7 @@ export default function Home() {
 
           <nav className="hidden md:flex items-center gap-8">
             <Link
-              href="/projects"
+              href="/"
               className="text-slate-300 hover:text-white transition"
             >
               Projects
@@ -170,7 +188,7 @@ export default function Home() {
 
                 <nav className="flex flex-col gap-4">
                   <Link
-                    href="/projects"
+                    href="/"
                     className="text-slate-300 hover:text-white transition py-2"
                   >
                     Projects
@@ -253,7 +271,7 @@ export default function Home() {
                           className="rounded-full"
                           asChild
                         >
-                          <Link href={featuredProject.webLink}>
+                          <Link target="_blank" href={featuredProject.webLink}>
                             <Eye className="mr-2 h-4 w-4" />
                             Live Demo
                           </Link>
@@ -264,7 +282,7 @@ export default function Home() {
                           className="rounded-full"
                           asChild
                         >
-                          <Link href={featuredProject.gitLink}>
+                          <Link target="_blank" href={featuredProject.gitLink}>
                             <Github className="mr-2 h-4 w-4" />
                             Code
                           </Link>
@@ -358,7 +376,7 @@ export default function Home() {
                               className="rounded-full w-9 h-9 p-0"
                               asChild
                             >
-                              <Link href={project.webLink}>
+                              <Link target="_blank" href={project.webLink}>
                                 <Eye className="h-4 w-4" />
                                 <span className="sr-only">Live Demo</span>
                               </Link>
@@ -369,7 +387,7 @@ export default function Home() {
                               className="rounded-full w-9 h-9 p-0"
                               asChild
                             >
-                              <Link href={project.gitLink}>
+                              <Link target="_blank" href={project.gitLink}>
                                 <Github className="h-4 w-4" />
                                 <span className="sr-only">GitHub</span>
                               </Link>
